@@ -14,7 +14,7 @@ const router = Router();
 
 router.get('/', validarJWT, getUsuarios);
 router.post('/', [
-        validarJWT,
+        /* validarJWT, */
         check('nombre', 'El nombre es obligatorio').not().notEmpty(),
         check('password', 'La contraseña es obligatoria').not().notEmpty(),
         check('email', 'El email es obligatorio').isEmail(),
@@ -26,7 +26,7 @@ router.put('/:id', [
         validarJWT,
         check('nombre', 'El nombre es obligatorio').not().notEmpty(),
         check('email', 'El email es obligatorio').isEmail(),
-        check('role', 'El role es obligatorio').not().notEmpty(),
+        check('rol', 'El rol es obligatorio').not().notEmpty(),
         validarCampos
     ],
     actualizarUsuario

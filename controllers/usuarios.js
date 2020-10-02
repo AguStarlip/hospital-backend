@@ -12,7 +12,7 @@ const getUsuarios = async(req, res) => {
     // Ejecuta promesas de manera simultanea
     const [usuarios, total] = await Promise.all([
         Usuario
-        .find({}, 'nombre email role google img')
+        .find({}, 'nombre email rol google img')
         .skip(desde)
         .limit(limite),
 
@@ -103,7 +103,14 @@ const actualizarUsuario = async(req, res = response) => {
 
         }
 
-        campos.email = email;
+        if (!usuarioDB.google) {
+            campos.email = email;
+        } else if (usuarioDB.email !== email) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Usuarios de google no pueden cambiar su email'
+            });
+        }
 
         const usuarioActualizado = await Usuario.findByIdAndUpdate(uid, campos, { new: true });
 
@@ -142,8 +149,8 @@ const borrarUsuario = async(req, res = response) => {
 
         res.json({
             ok: true,
-
-        })
+            msg: 'Usuario borrado'
+        });
 
     } catch (error) {
         console.log(error);
